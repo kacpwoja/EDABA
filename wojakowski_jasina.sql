@@ -50,3 +50,45 @@ CREATE TABLE Order_Products (
         FOREIGN KEY (product_id)
         REFERENCES Products(product_id)
 );
+
+CREATE TABLE Deliveries (
+    delivery_id INT NOT NULL PRIMARY KEY,
+    customer_email VARCHAR(50) NOT NULL,
+    state VARCHAR(50) NOT NULL, 
+	supplier VARCHAR(50) NOT NULL, 
+	different_address NUMBER(1,0) DEFAULT 0, 
+	address VARCHAR(50), 
+	address_city VARCHAR(50), 
+	address_zipcode CHAR(6), 
+	date_sent DATE, 
+	date_delivered DATE, 
+	tracking_id VARCHAR(50), 
+	parcel_locker_id VARCHAR(50),
+    CONSTRAINT FK_CustomerDelivery
+        FOREIGN KEY (customer_email)
+        REFERENCES Customers(email_address),
+    CONSTRAINT FK_SupplierDelivery
+        FOREIGN KEY (supplier)
+        REFERENCES Delivery_suppliers(supplier_name)
+);
+
+CREATE TABLE Delivery_suppliers (
+    supplier_name VARCHAR(50) NOT NULL PRIMARY KEY,
+    type VARCHAR(50) NOT NULL,
+    price FLOAT NOT NULL, 
+	tracking_url VARCHAR(200)
+);
+
+CREATE TABLE Reviews (
+    review_id INT NOT NULL PRIMARY KEY,
+    product_id INT NOT NULL,
+    customer_email VARCHAR(50) NOT NULL, 
+	score INT NOT NULL,
+    text VARCHAR(500),
+    CONSTRAINT FK_ReviewProduct
+        FOREIGN KEY (product_id)
+        REFERENCES Products(product_id),
+    CONSTRAINT FK_CustomerReview
+        FOREIGN KEY (customer_email)
+        REFERENCES Customers(email_address)
+);
