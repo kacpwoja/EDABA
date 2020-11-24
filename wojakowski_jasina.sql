@@ -51,6 +51,13 @@ CREATE TABLE Order_Products (
         REFERENCES Products(product_id)
 );
 
+CREATE TABLE Delivery_suppliers (
+    supplier_name VARCHAR(50) NOT NULL PRIMARY KEY,
+    type VARCHAR(50) NOT NULL,
+    price FLOAT NOT NULL, 
+	tracking_url VARCHAR(200)
+);
+
 CREATE TABLE Deliveries (
     delivery_id INT NOT NULL PRIMARY KEY,
     customer_email VARCHAR(50) NOT NULL,
@@ -70,13 +77,6 @@ CREATE TABLE Deliveries (
     CONSTRAINT FK_SupplierDelivery
         FOREIGN KEY (supplier)
         REFERENCES Delivery_suppliers(supplier_name)
-);
-
-CREATE TABLE Delivery_suppliers (
-    supplier_name VARCHAR(50) NOT NULL PRIMARY KEY,
-    type VARCHAR(50) NOT NULL,
-    price FLOAT NOT NULL, 
-	tracking_url VARCHAR(200)
 );
 
 CREATE TABLE Reviews (
