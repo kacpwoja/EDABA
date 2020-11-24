@@ -95,3 +95,42 @@ CREATE TABLE Reviews (
          REFERENCES Customers(email_address)
 );
 
+-- Inserting values
+INSERT INTO Customers VALUES ('kwojtyla@watykan.pl', 'Karol', 'Wojtyla', 'hasbfiadfadjhfbhj1b2413513', '20050204', 'Jana Pawla II 21/37', 'Warszawa', '02-137');
+INSERT INTO Customers VALUES ('jkowalski@buziaczek.pl', 'Jan', 'Kowalski', 'uoqeruoiqeior1roi3ui1', '987456321', 'Prosta 1', 'Krakow', '03-997');
+INSERT INTO Customers VALUES ('nergal69@behemoth.com', 'Adam', 'Darski', 'jahfoasofnu891n74914', '446512987', 'Bogurodzicy 12', 'Gdansk', '00-666');
+INSERT INTO Customers VALUES ('kamikami@mail.com', 'Kamil', 'Kamilowski', 'oadkajnsdkj19238080', '789123456', 'Dziekanska 13', 'Warszawa', '00-123');
+INSERT INTO Customers VALUES ('cbroski@gym.edu.com', 'Chad', 'Broski', 'ankjagbkjadbjk124143', '654312789', 'Biceps 200', 'Warszawa', '00-142');
+INSERT INTO Customers (email_address, first_name, last_name, password_hash) VALUES ('hackerman12@gmail.com', 'Miguel', 'Pollo', 'ajkdfjkadgkbs1319089');
+
+INSERT INTO Products VALUES (1, 'Premium Membership', 999.99, 100, 'Super fun mega giga great premium membership for this store!!! Buy now!! Not scam!!!!', 'Other');
+INSERT INTO Products VALUES (2, 'Gaming Chair', 399.99, 10, 'Very comfortable gaming chair', 'Furniture');
+INSERT INTO Products VALUES (3, 'Normal Chair', 99.99, 50, 'Normal char, not as comfortable as a gaming chair', 'Furniture');
+INSERT INTO Products VALUES (4, 'Table', 150.00, 25, 'I am the table', 'Furniture');
+INSERT INTO Products VALUES (5, 'Shirt', 39.99, 30, 'A shirt with a very funny image', 'Clothing');
+INSERT INTO Products VALUES (6, 'MEGA Hat', 15.49, 15, 'Make Elka Great Again', 'Clothing');
+
+INSERT INTO Orders VALUES (1, 'kwojtyla@watykan.pl', '2005-02-04', 999.99, 'DELIVERED');
+INSERT INTO Orders VALUES (2, 'cbroski@gym.edu.com', '2020-07-06', 559.99, 'PENDING');
+INSERT INTO Orders VALUES (3, 'hackerman12@gmail.com', '2020-06-04', 469.47, 'DELIVERED');
+INSERT INTO Orders VALUES (4, 'jkowalski@buziaczek.pl', '2020-11-09', 60.48, 'DELIVERING');
+
+INSERT INTO Order_Products VALUES (1, 1);
+INSERT INTO Order_Products VALUES (2, 2);
+INSERT INTO Order_Products VALUES (2, 4);
+INSERT INTO Order_Products VALUES (3, 2);
+INSERT INTO Order_Products VALUES (3, 5);
+INSERT INTO Order_Products VALUES (3, 6);
+INSERT INTO Order_Products VALUES (4, 5);
+INSERT INTO Order_Products VALUES (4, 6);
+
+INSERT INTO Delivery_Suppliers VALUES ('POCZTA_POLSKA', 'COURIER', 5, NULL);
+INSERT INTO Delivery_Suppliers VALUES ('SUPERKURIER', 'COURIER', 10, 'superkurier.pl/tracking/');
+INSERT INTO Delivery_Suppliers VALUES ('INPOST', 'PARCEL_LOCKER', 8, 'inpost.pl/tracking/');
+
+INSERT INTO Deliveries VALUES (2, 'cbroski@gym.edu.com', 'PENDING', 'SUPERKURIER', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO Deliveries VALUES (3, 'hackerman12@gmail.com', 'DELIVERED', 'SUPERKURIER', 1, 'Grzegorzewska 15/16', 'Warszawa', '02-543', '2020-06-05', '2020-06-09', NULL, NULL);
+INSERT INTO Deliveries VALUES (4, 'jkowalski@buziaczek.pl', 'DELIVERING', 'POCZTA_POLSKA', 0, NULL, NULL, NULL, "2020-11-11", NULL, "ASHB1231591QWE1", NULL);
+
+INSERT INTO Reviews VALUES (1, 6, 'hackerman12@gmail.com', 5, 'GREAT HAT!!! GREAT MESSAGE!!! GOOD!!! 5 STARS!!!');
+INSERT INTO Reviews VALUES (2, 1, 'kwojtyla@watykan.pl', 5, 'i am greatly enjoying the premium membership, this premium membership');
