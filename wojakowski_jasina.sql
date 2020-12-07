@@ -130,7 +130,45 @@ INSERT INTO Delivery_Suppliers VALUES ('INPOST', 'PARCEL_LOCKER', 8, 'inpost.pl/
 
 INSERT INTO Deliveries VALUES (2, 'cbroski@gym.edu.com', 'PENDING', 'SUPERKURIER', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO Deliveries VALUES (3, 'hackerman12@gmail.com', 'DELIVERED', 'SUPERKURIER', 1, 'Grzegorzewska 15/16', 'Warszawa', '02-543', '2020-06-05', '2020-06-09', NULL, NULL);
-INSERT INTO Deliveries VALUES (4, 'jkowalski@buziaczek.pl', 'DELIVERING', 'POCZTA_POLSKA', 0, NULL, NULL, NULL, "2020-11-11", NULL, "ASHB1231591QWE1", NULL);
+INSERT INTO Deliveries VALUES (4, 'jkowalski@buziaczek.pl', 'DELIVERING', 'POCZTA_POLSKA', 0, NULL, NULL, NULL, '2020-11-11', NULL, 'ASHB1231591QWE1', NULL);
 
 INSERT INTO Reviews VALUES (1, 6, 'hackerman12@gmail.com', 5, 'GREAT HAT!!! GREAT MESSAGE!!! GOOD!!! 5 STARS!!!');
 INSERT INTO Reviews VALUES (2, 1, 'kwojtyla@watykan.pl', 5, 'i am greatly enjoying the premium membership, this premium membership');
+
+-- simple SELECT statements
+
+-- select all customers from Warsaw
+SELECT * FROM Customers WHERE address_city='Warszawa';
+-- select all delivered packages
+SELECT * FROM Deliveries WHERE state='DELIVERED';
+-- select all products with stock lower than 20
+SELECT product_id, p_name, stock FROM Products WHERE stock<20;
+
+-- complex SELECT statements
+
+-- show products for each order
+SELECT o.order_id, o.customer_email, o.date_placed, p.product_id, p.p_name
+FROM Orders o
+INNER JOIN Order_Products op ON o.order_id=op.order_id
+INNER JOIN Products p ON p.product_id=op.product_id
+ORDER BY order_id;
+
+-- count the amount of times each item was ordered
+SELECT p.product_id, p.p_name, COUNT(op.product_id) AS times_ordered
+FROM Products p
+INNER JOIN Order_Products op ON p.product_id=op.product_id
+GROUP BY p.product_id, p.p_name;
+
+-- count the amount of deliveries done to each city
+SELECT cc.city, COUNT(cc.city) as times_delivered
+FROM
+(
+    SELECT
+    CASE
+        WHEN d.address_city IS NOT NULL THEN d.address_city
+        ELSE c.address_city
+    END AS city
+    FROM Deliveries d
+    INNER JOIN Customers c ON d.customer_email=c.email_address
+) cc
+GROUP BY cc.city;
