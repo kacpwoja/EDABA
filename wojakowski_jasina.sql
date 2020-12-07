@@ -143,6 +143,10 @@ SELECT * FROM Customers WHERE address_city='Warszawa';
 SELECT * FROM Deliveries WHERE state='DELIVERED';
 -- select all products with stock lower than 20
 SELECT product_id, p_name, stock FROM Products WHERE stock<20;
+-- select all positive reviews
+SELECT review_id, product_id, score, text FROM Reviews WHERE score>4;
+-- find all cheapest products
+SELECT product_id, p_name FROM Products WHERE price = SELECT MIN(price) FROM Products;
 
 -- complex SELECT statements
 
@@ -152,6 +156,12 @@ FROM Orders o
 INNER JOIN Order_Products op ON o.order_id=op.order_id
 INNER JOIN Products p ON p.product_id=op.product_id
 ORDER BY order_id;
+
+-- count number of orders made by each customer
+SELECT COUNT c.email_address, c.first_name, c.last_name , COUNT(o.order_id) AS number_of_orders
+FROM Customers c
+INNER JOIN Orders o ON c.email_address = o.customer_email
+GROUP BY c.email_address;
 
 -- count the amount of times each item was ordered
 SELECT p.product_id, p.p_name, COUNT(op.product_id) AS times_ordered
