@@ -203,4 +203,43 @@ FROM
     INNER JOIN Deliveries d ON o.order_id = d.order_id
     INNER JOIN Customers c ON o.customer_email = c.email_address
 ) oo
-GROUP BY oo.city
+GROUP BY oo.city;
+
+-- TRIGGER
+-- drop old
+--DROP TRIGGER productorder_added;
+--DROP TRIGGER productorder_removed;
+
+-- create new
+-- updating the order summary price when a new product is added or removed from the order
+CREATE TRIGGER productorder_added
+    AFTER INSERT ON Order_Products
+    FOR EACH ROW
+    BEGIN
+        UPDATE Orders SET
+            price = price + (SELECT price FROM Products WHERE product_id = :new.product_id)
+        WHERE order_id = :new.order_id;
+END;
+/
+CREATE TRIGGER productorder_removed
+    AFTER DELETE ON Order_Products
+    FOR EACH ROW
+    BEGIN
+        UPDATE Orders SET
+            price = price - (SELECT price FROM Products WHERE product_id = :old.product_id)
+        WHERE order_id = :old.order_id;
+END;
+/
+-- testing trigger
+SELECT order_id, price FROM Orders where order_id = 2;
+SELECT op.order_id, op.product_id, p.price FROM Order_Products op JOIN Products p ON op.product_id = p.product_id WHERE order_id = 2;
+
+INSERT INTO Order_Products VALUES (2, 6);
+
+SELECT order_id, price FROM Orders where order_id = 2;
+SELECT op.order_id, op.product_id, p.price FROM Order_Products op JOIN Products p ON op.product_id = p.product_id WHERE order_id = 2;
+
+DELETE FROM Order_Products WHERE order_id = 2 AND product_id = 6;
+
+SELECT order_id, price FROM Orders where order_id = 2;
+SELECT op.order_id, op.product_id, p.price FROM Order_Products op JOIN Products p ON op.product_id = p.product_id WHERE order_id = 2;
