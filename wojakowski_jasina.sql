@@ -182,3 +182,25 @@ FROM
     INNER JOIN Customers c ON d.customer_email=c.email_address
 ) cc
 GROUP BY cc.city;
+
+-- big select:
+-- show the amount of products and their total price delivered to each city
+SELECT oo.city,
+       COUNT(oo.product_id) total_products,
+       SUM(oo.product_price) price_sum
+FROM
+(
+    SELECT o.order_id,
+           CASE d.different_address
+                WHEN 1 THEN d.address_city
+                ELSE c.address_city
+           END city,
+           op.product_id,
+           p.price product_price
+    FROM Orders o
+    INNER JOIN Order_Products op ON o.order_id = op.order_id
+    INNER JOIN Products p ON p.product_id = op.product_id
+    INNER JOIN Deliveries d ON o.order_id = d.order_id
+    INNER JOIN Customers c ON o.customer_email = c.email_address
+) oo
+GROUP BY oo.city
